@@ -44,5 +44,17 @@ footer{text-align:center;padding:22px;color:#bba9ca}
 </section>
 </main>
 <footer>© 2026 Sattamatka Prediction</footer>
-</body>
+</body><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "YOUR_PROJECT_URL";
+const SUPABASE_KEY = "YOUR_PUBLISHABLE_KEY";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+console.log("Supabase connected successfully");
+</script>
 </html>
