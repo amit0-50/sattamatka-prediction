@@ -2,24 +2,27 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sattamatka Prediction</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#10051f;color:white;font-family:Arial,sans-serif}
-header{background:#260b46;padding:22px;text-align:center;border-bottom:2px solid #c15aff}
+header{text-align:center;padding:22px;background:#260b46;border-bottom:2px solid #c15aff}
 h1{color:#e6a5ff;margin:0}
-main{max-width:650px;margin:20px auto;padding:12px}
-.card{background:#211035;border:1px solid #9146c5;border-radius:14px;padding:18px;margin:15px 0}
+main{max-width:700px;margin:auto;padding:12px}
+.card{background:#211035;border:1px solid #9146c5;border-radius:14px;padding:16px;margin:15px 0}
 h2{color:#dda3ff}
-input,textarea{width:100%;padding:13px;margin:8px 0;background:#160b24;color:white;border:1px solid #9146c5;border-radius:8px}
-button{padding:12px;background:#9b3bd1;color:white;border:0;border-radius:8px;font-size:15px;margin:5px 0;cursor:pointer}
+input,textarea{width:100%;padding:12px;margin:7px 0;background:#160b24;color:white;border:1px solid #9146c5;border-radius:8px}
+button{padding:11px 14px;background:#9b3bd1;color:white;border:0;border-radius:8px;margin:5px 2px;cursor:pointer}
 .full{width:100%}
-.record{border:1px solid #70408c;border-radius:9px;padding:12px;margin:10px 0;overflow-wrap:anywhere}
-.small{color:#cbb8d9;font-size:13px}
+.record{border:1px solid #70408c;border-radius:10px;padding:13px;margin:12px 0;overflow-wrap:anywhere}
+.record img{width:100%;max-height:400px;object-fit:contain;border-radius:9px;margin-top:10px}
+.small{font-size:13px;color:#cbb8d9}
 #dashboard{display:none}
-#message{color:#e6a5ff;overflow-wrap:anywhere}
+.color-btn{width:34px;height:34px;border:2px solid white;border-radius:50%;padding:0}
+.comment{border-top:1px solid #70408c;padding:10px 0}
+#message,#saveMessage{color:#e6a5ff}
 </style>
 </head>
 <body>
@@ -29,18 +32,18 @@ button{padding:12px;background:#9b3bd1;color:white;border:0;border-radius:8px;fo
 </header>
 
 <main>
-<section class="card" id="home">
+<div class="card">
 <h2>आपका स्वागत है</h2>
 <p>यहाँ सामान्य जानकारी और गैर-जुआ रिकॉर्ड उपलब्ध होंगे।</p>
-</section>
+</div>
 
-<section class="card" id="login">
+<div class="card" id="login">
 <h2>Admin Login</h2>
-<input id="email" type="email" placeholder="ईमेल">
+<input id="email" type="email" placeholder="Admin ईमेल">
 <input id="password" type="password" placeholder="पासवर्ड">
 <button class="full" onclick="login()">Login करें</button>
 <p id="message"></p>
-</section>
+</div>
 
 <section id="dashboard">
 <div class="card">
@@ -50,141 +53,279 @@ button{padding:12px;background:#9b3bd1;color:white;border:0;border-radius:8px;fo
 </div>
 
 <div class="card">
-<h2>नया रिकॉर्ड जोड़ें</h2>
-<input id="recordTitle" placeholder="रिकॉर्ड का शीर्षक">
-<textarea id="recordDescription" rows="4" placeholder="रिकॉर्ड की जानकारी लिखें"></textarea>
-<button class="full" onclick="addRecord()">रिकॉर्ड सेव करें</button>
+<h2>नई पोस्ट जोड़ें</h2>
+<input id="recordTitle" placeholder="पोस्ट का शीर्षक">
+<textarea id="recordDescription" rows="4" placeholder="पोस्ट की जानकारी"></textarea>
+<p>टेक्स्ट का रंग चुनें:</p>
+<div>
+<button class="color-btn" style="background:#fff" onclick="setColor('#ffffff')"></button>
+<button class="color-btn" style="background:#ff4b4b" onclick="setColor('#ff4b4b')"></button>
+<button class="color-btn" style="background:#ffe45e" onclick="setColor('#ffe45e')"></button>
+<button class="color-btn" style="background:#52e38a" onclick="setColor('#52e38a')"></button>
+<button class="color-btn" style="background:#55baff" onclick="setColor('#55baff')"></button>
+<button class="color-btn" style="background:#ff83d1" onclick="setColor('#ff83d1')"></button>
+<button class="color-btn" style="background:#c58aff" onclick="setColor('#c58aff')"></button>
+</div>
+<p id="selectedColor" class="small">चुना रंग: सफेद</p>
+<label>एक फोटो चुनें:</label>
+<input id="photo" type="file" accept="image/*">
+<p class="small">एक पोस्ट में एक फोटो, अधिकतम 5 MB।</p>
+<button class="full" id="saveButton" onclick="addRecord()">पोस्ट सेव करें</button>
 <p id="saveMessage"></p>
 </div>
 
 <div class="card">
-<h2>सभी रिकॉर्ड</h2>
-<button onclick="loadRecords()">रिकॉर्ड रिफ्रेश करें</button>
-<div id="recordsList">रिकॉर्ड लोड हो रहे हैं...</div>
+<h2>कमेंट मैनेजमेंट</h2>
+<button onclick="loadAdminComments()">कमेंट रिफ्रेश करें</button>
+<div id="adminComments"></div>
 </div>
 </section>
+
+<div class="card">
+<h2>सभी पोस्ट</h2>
+<button onclick="loadRecords()">रिफ्रेश करें</button>
+<div id="publicRecords">पोस्ट लोड हो रही हैं...</div>
+</div>
 </main>
 
 <script>
-const SUPABASE_URL = "https://svdevczfllkvvlcxuovf.supabase.co";
-const SUPABASE_KEY = "sb_publishable_yWbdGJJ9HFm9WXvQ1eBwOw_tLLkt9Sx";
-const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL="https://svdevczfllkvvlcxuovf.supabase.co";
+const SUPABASE_KEY="sb_publishable_yWbdGJJ9HFm9WXvQ1eBwOw_tLLkt9Sx";
+const ADMIN_UID="24760a7f-de80-475d-9348-6f6ab48aed2d";
+const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let selectedColor="#ffffff";
+let isAdmin=false;
+
+function el(tag,text,cls){
+ const e=document.createElement(tag);
+ if(text!==undefined)e.textContent=text;
+ if(cls)e.className=cls;
+ return e;
+}
+
+function setColor(c){
+ selectedColor=c;
+ document.getElementById("selectedColor").textContent="चुना रंग: "+c;
+}
 
 async function login(){
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-  const message = document.getElementById("message");
-  message.textContent = "जाँच हो रही है...";
-  const {data,error} = await client.auth.signInWithPassword({email,password});
-  if(error){message.textContent = "त्रुटि: " + error.message;return;}
-  showDashboard(data.user);
+ const email=document.getElementById("email").value.trim();
+ const password=document.getElementById("password").value;
+ const msg=document.getElementById("message");
+ msg.textContent="लॉगिन हो रहा है...";
+ const {data,error}=await client.auth.signInWithPassword({email,password});
+ if(error){msg.textContent="त्रुटि: "+error.message;return;}
+ if(data.user.id!==ADMIN_UID){
+  await client.auth.signOut();
+  msg.textContent="यह Admin अकाउंट नहीं है।";
+  return;
+ }
+ showDashboard(data.user);
 }
 
 function showDashboard(user){
-  document.getElementById("login").style.display = "none";
-  document.getElementById("dashboard").style.display = "block";
-  document.getElementById("adminEmail").textContent = "लॉगिन: " + user.email;
-  loadRecords();
+ isAdmin=true;
+ document.getElementById("login").style.display="none";
+ document.getElementById("dashboard").style.display="block";
+ document.getElementById("adminEmail").textContent="लॉगिन: "+user.email;
+ loadAdminComments();
 }
 
 async function logout(){
-  await client.auth.signOut();
-  document.getElementById("dashboard").style.display = "none";
-  document.getElementById("login").style.display = "block";
-  document.getElementById("password").value = "";
-  document.getElementById("message").textContent = "आप लॉगआउट हो गए हैं।";
+ await client.auth.signOut();
+ isAdmin=false;
+ document.getElementById("dashboard").style.display="none";
+ document.getElementById("login").style.display="block";
+ document.getElementById("password").value="";
+ document.getElementById("message").textContent="लॉगआउट हो गया।";
 }
 
 async function addRecord(){
-  const title = document.getElementById("recordTitle").value.trim();
-  const description = document.getElementById("recordDescription").value.trim();
-  const msg = document.getElementById("saveMessage");
+ if(!isAdmin)return;
+ const title=document.getElementById("recordTitle").value.trim();
+ const description=document.getElementById("recordDescription").value.trim();
+ const file=document.getElementById("photo").files[0];
+ const msg=document.getElementById("saveMessage");
+ const btn=document.getElementById("saveButton");
 
-  if(!title || !description){
-    msg.textContent = "कृपया दोनों जानकारी भरें।";
-    return;
-  }
+ if(!title||!description||!file){
+  msg.textContent="शीर्षक, जानकारी और एक फोटो जरूरी है।";return;
+ }
+ if(!file.type.startsWith("image/")||file.size>10*1024*1024){
+  msg.textContent="सही फोटो चुनें,<p class="small">एक पोस्ट में एक फोटो, अधिकतम 10 MB।</p> ";return;
+ }
 
-  msg.textContent = "रिकॉर्ड सेव हो रहा है...";
-  const {error} = await client.from("records").insert([{title,description}]);
+ btn.disabled=true;
+ msg.textContent="फोटो अपलोड हो रही है...";
+ let uploadedPath=null;
 
-  if(error){
-    msg.textContent = "सेव नहीं हुआ: " + error.message;
-    return;
-  }
+ try{
+  const ext=file.name.split(".").pop().toLowerCase().replace(/[^a-z0-9]/g,"");
+  const path=ADMIN_UID+"/"+crypto.randomUUID()+"."+ext;
+  const {error:upError}=await client.storage.from("post-photos").upload(path,file,{contentType:file.type});
+  if(upError)throw upError;
+  uploadedPath=path;
 
-  document.getElementById("recordTitle").value = "";
-  document.getElementById("recordDescription").value = "";
-  msg.textContent = "रिकॉर्ड सफलतापूर्वक सेव हुआ।";
+  const {data:urlData}=client.storage.from("post-photos").getPublicUrl(path);
+  const {error}=await client.from("records").insert([{
+   title,description,text_color:selectedColor,image_urls:[urlData.publicUrl]
+  }]);
+  if(error)throw error;
+
+  document.getElementById("recordTitle").value="";
+  document.getElementById("recordDescription").value="";
+  document.getElementById("photo").value="";
+  msg.textContent="पोस्ट सफलतापूर्वक सेव हुई।";
   loadRecords();
+ }catch(e){
+  msg.textContent="त्रुटि: "+e.message;
+  if(uploadedPath){
+   await client.storage.from("post-photos").remove([uploadedPath]);
+  }
+ }finally{
+  btn.disabled=false;
+ }
 }
 
 async function loadRecords(){
-  const list = document.getElementById("recordsList");
-  list.textContent = "लोड हो रहा है...";
+ const box=document.getElementById("publicRecords");
+ box.textContent="पोस्ट लोड हो रही हैं...";
+ const {data,error}=await client.from("records").select("*").order("created_at",{ascending:false});
+ if(error){box.textContent="त्रुटि: "+error.message;return;}
+ box.replaceChildren();
+ if(!data.length){box.textContent="अभी कोई पोस्ट नहीं है।";return;}
 
-  const {data,error} = await client
-    .from("records")
-    .select("*")
-    .order("created_at",{ascending:false});
+ for(const r of data){
+  const card=el("div",undefined,"record");
+  const heading=el("h3",r.title);
+  heading.style.color=r.text_color||"#fff";
+  card.appendChild(heading);
 
-  if(error){
-    list.textContent = "रिकॉर्ड नहीं मिले: " + error.message;
-    return;
+  const desc=el("p",r.description);
+  desc.style.color=r.text_color||"#fff";
+  card.appendChild(desc);
+
+  if(r.image_urls&&r.image_urls[0]){
+   const img=el("img");
+   img.src=r.image_urls[0];
+   img.alt=r.title;
+   img.loading="lazy";
+   card.appendChild(img);
   }
 
-  list.replaceChildren();
+  card.appendChild(el("p","देखने की संख्या: "+(r.view_count||0),"small"));
+  if(r.created_at)card.appendChild(el("p",new Date(r.created_at).toLocaleString("hi-IN"),"small"));
 
-  if(!data.length){
-    list.textContent = "अभी कोई रिकॉर्ड नहीं है।";
-    return;
-  }
+  const comments=el("div");
+  comments.textContent="कमेंट लोड हो रहे हैं...";
+  card.appendChild(el("h3","कमेंट"));
+  card.appendChild(comments);
 
-  data.forEach(record=>{
-    const card = document.createElement("div");
-    card.className = "record";
+  const name=document.createElement("input");
+  name.placeholder="आपका नाम";
+  const message=document.createElement("textarea");
+  message.placeholder="अपना कमेंट लिखें";
+  message.rows=2;
+  const send=el("button","कमेंट भेजें");
+  send.onclick=()=>sendComment(r.id,name,message,send);
+  card.append(name,message,send);
 
-    const heading = document.createElement("h3");
-    heading.textContent = record.title;
-
-    const desc = document.createElement("p");
-    desc.textContent = record.description;
-
-    const date = document.createElement("p");
-    date.className = "small";
-    date.textContent = record.created_at
-      ? new Date(record.created_at).toLocaleString("hi-IN")
-      : "";
-
-    const del = document.createElement("button");
-    del.textContent = "डिलीट करें";
-    del.onclick = ()=>deleteRecord(record.id);
-
-    card.append(heading,desc,date,del);
-    list.appendChild(card);
-  });
+  box.appendChild(card);
+  loadComments(r.id,comments);
+  countView(r.id);
+ }
 }
 
-async function deleteRecord(id){
-  if(!confirm("क्या आप यह रिकॉर्ड डिलीट करना चाहते हैं?")) return;
+async function countView(id){
+ const key="viewed_record_"+id;
+ try{
+  if(sessionStorage.getItem(key))return;
+  const {error}=await client.rpc("increment_record_view",{record_id:id});
+  if(!error)sessionStorage.setItem(key,"1");
+ }catch(e){}
+}
 
-  const {error} = await client.from("records").delete().eq("id",id);
+async function loadComments(recordId,box){
+ const {data,error}=await client.from("comments")
+  .select("id,name,message,created_at")
+  .eq("record_id",recordId).eq("is_approved",true)
+  .order("created_at",{ascending:true});
+ box.replaceChildren();
+ if(error){box.textContent="कमेंट लोड नहीं हुए।";return;}
+ if(!data.length){box.textContent="अभी कोई कमेंट नहीं है।";return;}
+ data.forEach(c=>{
+  const item=el("div",undefined,"comment");
+  item.appendChild(el("b",c.name));
+  item.appendChild(el("p",c.message));
+  box.appendChild(item);
+ });
+}
 
-  if(error){
-    alert("डिलीट नहीं हुआ: " + error.message);
-    return;
+async function sendComment(id,name,message,button){
+ const n=name.value.trim(),m=message.value.trim();
+ if(!n||!m){alert("नाम और कमेंट लिखें।");return;}
+ if(n.length>60||m.length>1000){alert("नाम या कमेंट बहुत लंबा है।");return;}
+ button.disabled=true;
+ const {error}=await client.from("comments").insert([{
+  record_id:id,name:n,message:m,is_approved:false
+ }]);
+ button.disabled=false;
+ if(error){alert("कमेंट नहीं भेजा गया: "+error.message);return;}
+ name.value="";
+ message.value="";
+ alert("कमेंट भेज दिया गया है। Admin की मंजूरी के बाद दिखाई देगा।");
+}
+
+async function loadAdminComments(){
+ if(!isAdmin)return;
+ const box=document.getElementById("adminComments");
+ box.textContent="लोड हो रहा है...";
+ const {data,error}=await client.from("comments")
+  .select("id,record_id,name,message,created_at,is_approved")
+  .order("created_at",{ascending:false});
+ if(error){box.textContent="त्रुटि: "+error.message;return;}
+ box.replaceChildren();
+ if(!data.length){box.textContent="अभी कोई कमेंट नहीं है।";return;}
+
+ data.forEach(c=>{
+  const item=el("div",undefined,"comment");
+  item.appendChild(el("b",c.name));
+  item.appendChild(el("p",c.message));
+  item.appendChild(el("p","पोस्ट ID: "+c.record_id+" | "+(c.is_approved?"Approved":"Pending"),"small"));
+
+  if(!c.is_approved){
+   const approve=el("button","Approve");
+   approve.onclick=()=>moderateComment(c.id,true);
+   item.appendChild(approve);
   }
+  const del=el("button","Delete");
+  del.onclick=()=>deleteComment(c.id);
+  item.appendChild(del);
+  box.appendChild(item);
+ });
+}
 
-  alert("रिकॉर्ड डिलीट हो गया।");
-  loadRecords();
+async function moderateComment(id,approved){
+ const {error}=await client.from("comments").update({is_approved:approved}).eq("id",id);
+ if(error){alert(error.message);return;}
+ loadAdminComments();
+ loadRecords();
+}
+
+async function deleteComment(id){
+ if(!confirm("क्या यह कमेंट हटाना चाहते हैं?"))return;
+ const {error}=await client.from("comments").delete().eq("id",id);
+ if(error){alert(error.message);return;}
+ loadAdminComments();
+ loadRecords();
 }
 
 async function checkSession(){
-  const {data} = await client.auth.getSession();
-  if(data.session) showDashboard(data.session.user);
+ const {data}=await client.auth.getSession();
+ if(data.session&&data.session.user.id===ADMIN_UID)showDashboard(data.session.user);
 }
-
 checkSession();
+loadRecords();
 </script>
 </body>
 </html>
