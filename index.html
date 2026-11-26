@@ -69,8 +69,7 @@ hr{border:0;border-top:1px solid #e5eaf2;margin:16px 0}
 <button class="blue" onclick="showLogin()" id="adminBtn">Admin Login</button>
 </div>
 <main class="wrap">
-  
-<section class="card hidden" id="loginBox">
+  <section class="card hidden" id="loginBox">
   <h3>Admin Login</h3>
   <label>Email</label>
   <input type="email" id="adminEmail" placeholder="Admin Email">
@@ -80,13 +79,11 @@ hr{border:0;border-top:1px solid #e5eaf2;margin:16px 0}
   <button class="light" onclick="hideLogin()">Cancel</button>
   <p id="loginMessage" class="small"></p>
 </section>
-
 <section class="card hidden" id="adminPanel">
   <h2>Admin Panel</h2>
   <p class="small">Website को यहाँ से मैनेज करें।</p>
   <button class="danger" onclick="logout()">Logout</button>
-
-  <div class="admin-tabs">
+ <div class="admin-tabs">
     <button class="light" onclick="showAdminTab('dashboard')">Dashboard</button>
     <button class="light" onclick="showAdminTab('posts')">Posts</button>
     <button class="light" onclick="showAdminTab('design')">Design</button>
@@ -94,7 +91,7 @@ hr{border:0;border-top:1px solid #e5eaf2;margin:16px 0}
     <button class="light" onclick="showAdminTab('comments')">Comments</button>
   </div>
 
-  <div id="tab-dashboard" class="admin-section">
+   <div id="tab-dashboard" class="admin-section">
     <h3>Dashboard</h3>
     <div class="stats">
       <div class="stat">
@@ -230,6 +227,7 @@ const visitorId = (() => {
 
 document.getElementById("year").textContent = new Date().getFullYear();
 </script>
+<script>
 async function showLogin() {
   document.getElementById("loginBox").classList.remove("hidden");
 }
