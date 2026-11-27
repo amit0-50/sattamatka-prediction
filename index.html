@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -5,36 +6,112 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Guessing Guru 2.O</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-:root{--blue:#1769d2;--bg:#f3f7fd;--header1:#1263c5;--header2:#55a5f5}
+:root{
+  --blue:#1769d2;
+  --bg:#f3f7fd;
+  --header1:#1263c5;
+  --header2:#55a5f5;
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:#24344d}
-header{background:linear-gradient(120deg,var(--header1),var(--header2));color:white;padding:22px 15px;text-align:center}
+body{
+  margin:0;
+  background:var(--bg);
+  font-family:Arial,sans-serif;
+  color:#24344d;
+}
+header{
+  background:linear-gradient(120deg,var(--header1),var(--header2));
+  color:white;
+  padding:22px 15px;
+  text-align:center;
+}
 header h1{margin:0 0 7px;font-size:25px}
 header p{margin:0;font-size:14px}
-#logo{max-width:100px;max-height:75px;object-fit:contain;margin-bottom:8px}
-.top{display:flex;justify-content:center;gap:10px;padding:12px;flex-wrap:wrap}
-button{border:0;border-radius:9px;padding:10px 15px;cursor:pointer;font-weight:bold}
+#logo{
+  max-width:110px;
+  max-height:85px;
+  object-fit:contain;
+  margin-bottom:8px;
+}
+.top{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  padding:12px;
+  flex-wrap:wrap;
+}
+button{
+  border:0;
+  border-radius:9px;
+  padding:10px 15px;
+  cursor:pointer;
+  font-weight:bold;
+}
 button:disabled{opacity:.5;cursor:not-allowed}
 .blue{background:var(--blue);color:white}
 .light{background:#e5efff;color:#1554a1}
 .danger{background:#ffe8e8;color:#a32222}
 .wrap{max-width:900px;margin:auto;padding:12px}
-.card{background:white;border-radius:15px;padding:16px;margin:14px 0;box-shadow:0 3px 13px #183c6612}
-.post{border-left:7px solid var(--post-color);background:var(--post-bg)}
-.post h2{margin:0 0 10px;color:var(--post-color);overflow-wrap:anywhere}
+.card{
+  background:white;
+  border-radius:15px;
+  padding:16px;
+  margin:14px 0;
+  box-shadow:0 3px 13px #183c6612;
+}
+.post{border-left:7px solid var(--post-color,#1769d2)}
+.post h2{margin:0 0 10px;overflow-wrap:anywhere}
 .post p{white-space:pre-wrap;line-height:1.6;overflow-wrap:anywhere}
-.post img{width:100%;max-height:420px;object-fit:contain;border-radius:12px;margin-top:10px;background:#eef3fa}
-.meta{font-size:13px;color:#64748b;display:flex;gap:14px;flex-wrap:wrap;margin-top:12px}
-.comment{background:var(--comment-bg,#eef5ff);padding:12px;border-radius:11px;margin:9px 0}
+.post img{
+  width:100%;
+  max-height:420px;
+  object-fit:contain;
+  border-radius:12px;
+  margin-top:10px;
+  background:#eef3fa;
+}
+.meta{
+  font-size:13px;
+  color:#64748b;
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+.comment{
+  background:#eef5ff;
+  padding:12px;
+  border-radius:11px;
+  margin:9px 0;
+}
 .comment p{margin:7px 0;white-space:pre-wrap}
 .reactions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
 .reaction{background:white;border:1px solid #dce6f5;padding:7px 10px}
-input,textarea,select{width:100%;padding:12px;border:1px solid #cbd8e9;border-radius:9px;margin:7px 0 12px;font:inherit;background:white}
+input,textarea,select{
+  width:100%;
+  padding:12px;
+  border:1px solid #cbd8e9;
+  border-radius:9px;
+  margin:7px 0 12px;
+  font:inherit;
+  background:white;
+}
 textarea{min-height:85px;resize:vertical}
 label{font-weight:bold;font-size:14px;display:block}
 .socials{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.social{display:block;text-decoration:none;padding:16px;border-radius:12px;background:#eaf2ff;color:#164d91;font-weight:bold;text-align:center;overflow-wrap:anywhere}
+.social{
+  display:block;
+  text-decoration:none;
+  padding:15px;
+  border-radius:12px;
+  background:#eaf2ff;
+  color:#164d91;
+  font-weight:bold;
+  text-align:center;
+  overflow-wrap:anywhere;
+}
 .hidden{display:none!important}
 h3{color:#174e91}
 footer{text-align:center;padding:25px;color:#718096;font-size:13px}
@@ -46,52 +123,77 @@ hr{border:0;border-top:1px solid #e5eaf2;margin:16px 0}
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
 .stat{background:#edf4ff;padding:13px;border-radius:10px;text-align:center}
 .stat strong{display:block;font-size:23px;color:#175cb1}
-.image-row{display:flex;align-items:center;gap:10px;margin:8px 0;padding:8px;background:#f3f7fd;border-radius:9px}
+.image-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:8px 0;
+  padding:8px;
+  background:#f3f7fd;
+  border-radius:9px;
+}
 .image-row img{width:75px;height:60px;object-fit:cover;border-radius:7px}
-.contact-area{margin-top:12px}
 .contact-toggle{background:#164f91;color:white;width:100%;font-size:15px}
 .contact-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-.contact-links a{flex:1;text-align:center;text-decoration:none;padding:10px;border-radius:9px;color:white;font-weight:bold}
+.contact-links a{
+  flex:1;
+  text-align:center;
+  text-decoration:none;
+  padding:10px;
+  border-radius:9px;
+  color:white;
+  font-weight:bold;
+}
 .wa-link{background:#168b50}
 .tg-link{background:#168ac0}
+.ig-link{background:#a12c83}
 .author{font-size:13px;color:#52657e;font-weight:bold;margin-top:10px}
-@media(min-width:600px){.stats{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:600px){
+  .stats{grid-template-columns:repeat(4,1fr)}
+}
 </style>
 </head>
+
 <body>
 <header>
-<img id="logo" class="hidden" alt="Website Logo">
-<h1 id="siteTitle">Guessing Guru 2.O</h1>
-<p id="tagline">सामान्य जानकारी, उपयोगी पोस्ट और आपके विचार</p>
+  <img id="logo" class="hidden" alt="Website Logo">
+  <h1 id="siteTitle">Guessing Guru 2.O</h1>
+  <p id="tagline">सामान्य जानकारी, उपयोगी पोस्ट और आपके विचार</p>
 </header>
+
 <div class="top">
-<button class="light" onclick="toggleLanguage()" id="langBtn">English</button>
-<button class="blue" onclick="showLogin()" id="adminBtn">Admin Login</button>
+  <button class="light" onclick="toggleLanguage()" id="langBtn">English</button>
+  <button class="blue" onclick="showLogin()">Admin Login</button>
 </div>
+
 <main class="wrap">
-  <section class="card hidden" id="loginBox">
+<!-- Admin Login -->
+<section id="loginBox" class="card hidden">
   <h3>Admin Login</h3>
   <label>Email</label>
-  <input type="email" id="adminEmail" placeholder="Admin Email">
+  <input type="email" id="loginEmail" placeholder="Admin email">
   <label>Password</label>
-  <input type="password" id="adminPassword" placeholder="Password">
-  <button class="blue" onclick="login()">Login</button>
+  <input type="password" id="loginPassword" placeholder="Password">
+  <button class="blue" onclick="adminLogin()">Login</button>
   <button class="light" onclick="hideLogin()">Cancel</button>
   <p id="loginMessage" class="small"></p>
 </section>
-<section class="card hidden" id="adminPanel">
+
+<!-- Admin Panel -->
+<section id="adminPanel" class="card hidden">
   <h2>Admin Panel</h2>
-  <p class="small">Website को यहाँ से मैनेज करें।</p>
-  <button class="danger" onclick="logout()">Logout</button>
- <div class="admin-tabs">
+  <p class="small">Website को यहाँ से manage करें।</p>
+
+  <div class="admin-tabs">
     <button class="light" onclick="showAdminTab('dashboard')">Dashboard</button>
     <button class="light" onclick="showAdminTab('posts')">Posts</button>
     <button class="light" onclick="showAdminTab('design')">Design</button>
-    <button class="light" onclick="showAdminTab('social')">Contact & Social</button>
+    <button class="light" onclick="showAdminTab('social')">Social Links</button>
     <button class="light" onclick="showAdminTab('comments')">Comments</button>
   </div>
 
-   <div id="tab-dashboard" class="admin-section">
+  <!-- Dashboard Tab -->
+  <div id="tab-dashboard" class="admin-section">
     <h3>Dashboard</h3>
     <div class="stats">
       <div class="stat">
@@ -107,92 +209,120 @@ hr{border:0;border-top:1px solid #e5eaf2;margin:16px 0}
         <span>Total Comments</span>
       </div>
       <div class="stat">
-        <strong id="pendingComments">0</strong>
-        <span>Pending Comments</span>
+        <strong id="pendingCount">0</strong>
+        <span>Pending</span>
       </div>
     </div>
-    <button class="blue" onclick="refreshDashboard()">Refresh Dashboard</button>
+    <button class="blue" onclick="loadAdminData()">Refresh Dashboard</button>
   </div>
 
+  <!-- Posts Tab -->
   <div id="tab-posts" class="admin-section hidden">
-    <h3>Create / Edit Post</h3>
+    <h3 id="postFormHeading">Add New Post</h3>
+
     <input type="hidden" id="editPostId">
 
     <label>Post Title</label>
-    <input id="postTitle" placeholder="Post का शीर्षक">
+    <input id="postTitle" type="text" placeholder="Post का शीर्षक">
 
     <label>Description</label>
-    <textarea id="postDescription" placeholder="अपनी पोस्ट लिखें"></textarea>
+    <textarea id="postDescription" placeholder="अपनी पोस्ट लिखें..."></textarea>
 
-    <label>Post Title Color</label>
-    <input type="color" id="postColor" value="#ffffff">
+    <label>Text Color</label>
+    <input id="postTextColor" type="color" value="#24344d">
 
-    <label>Photos</label>
-    <input type="file" id="postImages" accept="image/*" multiple>
+    <label>Photos Upload</label>
+    <input id="postPhotos" type="file" accept="image/*" multiple>
+    <p class="small">एक साथ कई फोटो चुन सकते हैं।</p>
 
-    <div id="existingImages"></div>
+    <div id="selectedImages"></div>
 
     <button class="blue" onclick="savePost()">Save Post</button>
     <button class="light" onclick="resetPostForm()">Clear Form</button>
 
     <hr>
-    <h3>Existing Posts</h3>
-    <div id="adminPostsList"></div>
+    <h3>Manage Existing Posts</h3>
+    <div id="adminPostsList">Loading posts...</div>
+  </div>
+
+  <!-- Design Tab -->
+  <div id="tab-design" class="admin-section hidden">
+    <h3>Website Design</h3>
+
+    <label>Website Title</label>
+    <input id="settingTitle" type="text" placeholder="Website का नाम">
+
+    <label>Tagline</label>
+    <input id="settingTagline" type="text" placeholder="Website की tagline">
+
+    <label>Upload Logo From Phone</label>
+    <input id="logoFile" type="file" accept="image/*">
+    <div id="logoPreview"></div>
+
+    <label>Header First Color</label>
+    <input id="headerColor1" type="color" value="#1263c5">
+
+    <label>Header Second Color</label>
+    <input id="headerColor2" type="color" value="#55a5f5">
+
+    <label>Button Color</label>
+    <input id="buttonColor" type="color" value="#1769d2">
+
+    <button class="blue" onclick="saveSettings()">Save Design</button>
+  </div>
+
+  <!-- Social Links Tab -->
+  <div id="tab-social" class="admin-section hidden">
+    <h3>Contact & Social Links</h3>
+
+    <label>Contact Button Name</label>
+    <input id="contactLabel" type="text" placeholder="जैसे Contact Us">
+
+    <label>WhatsApp Link</label>
+    <input id="whatsappUrl" type="url" placeholder="https://wa.me/...">
+
+    <label>Telegram Link</label>
+    <input id="telegramUrl" type="url" placeholder="https://t.me/...">
+
+    <label>Instagram Link</label>
+    <input id="instagramUrl" type="url" placeholder="https://instagram.com/...">
+
+    <button class="blue" onclick="saveSettings()">Save Social Links</button>
+  </div>
+
+  <!-- Comments Moderation Tab -->
+  <div id="tab-comments" class="admin-section hidden">
+    <h3>Comments Moderation</h3>
+    <p class="small">जो comments अभी approve नहीं हुए हैं, वे यहाँ दिखाई देंगे। Approve करने पर वे वेबसाइट पर दिखेंगे।</p>
+    <div id="pendingCommentsList">Loading comments...</div>
+  </div>
+
+  <hr>
+  <button class="danger" onclick="adminLogout()">Logout</button>
+</section><!-- Public Social Links -->
+<section class="card">
+  <h3>Connect With Us</h3>
+  <div id="socialLinks" class="socials">
+    <p class="small">Social links loading...</p>
   </div>
 </section>
-</main>
-<section class="card hidden" id="tab-social">
-  <h3>Contact & Social Settings</h3>
 
-  <label>Contact Button का नाम</label>
-  <input id="contactLabel" placeholder="हमसे संपर्क करें">
-
-  <label>WhatsApp Link</label>
-  <input id="whatsappUrl" placeholder="https://wa.me/...">
-
-  <label>Telegram Link</label>
-  <input id="telegramUrl" placeholder="https://t.me/...">
-
-  <button class="blue" onclick="saveSettings()">Save Contact Settings</button>
-</section>
-
-<section class="card hidden" id="tab-design">
-  <h3>Website Design</h3>
-
-  <label>Website का नाम</label>
-  <input id="siteTitleInput" placeholder="Website Name">
-
-  <label>Website की जानकारी</label>
-  <input id="taglineInput" placeholder="Website Tagline">
-
-  <label>Logo URL</label>
-  <input id="logoUrl" placeholder="Logo Image Link">
-
-  <label>Header का पहला रंग</label>
-  <input type="color" id="headerColor1" value="#1263c5">
-
-  <label>Header का दूसरा रंग</label>
-  <input type="color" id="headerColor2" value="#55a5f5">
-
-  <button class="blue" onclick="saveSettings()">Save Design</button>
-</section>
-
-<section class="card">
-  <h3>हमारे सोशल मीडिया</h3>
-  <div id="socialLinks" class="socials"></div>
-</section>
-
-<section id="postsList">
+<!-- Public Posts -->
+<section>
   <h2>Latest Posts</h2>
-  <div id="postsContainer"></div>
+  <div id="postsContainer">
+    <div class="card">Posts loading...</div>
+  </div>
 </section>
 
 <footer>
-  © <span id="year"></span> Guessing Guru 2.O
-  <p>सामान्य जानकारी और उपयोगी पोस्ट</p>
+  <p>© <span id="currentYear"></span> Guessing Guru 2.O</p>
+  <p>आपके विचार और सुझाव हमारे लिए महत्वपूर्ण हैं।</p>
 </footer>
 
-<script>
+</main>
+
+<script>// Supabase Configuration
 const SUPABASE_URL = "https://svdevczfllkvvlcxuovf.supabase.co";
 const SUPABASE_KEY = "sb_publishable_yWbdGJJ9HFm9WXvQ1eBwOw_tLLkt9Sx";
 const ADMIN_UID = "24760a7f-de80-475d-9348-6f6ab48aed2d";
@@ -200,105 +330,127 @@ const ADMIN_UID = "24760a7f-de80-475d-9348-6f6ab48aed2d";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
-let currentSettings = {};
-let currentLanguage = "hi";
-let selectedImages = [];
-let removedImages = [];
-
-const DEFAULT_SETTINGS = {
-  siteTitle: "Guessing Guru 2.O",
+let currentSettings = {
+  title: "Guessing Guru 2.O",
   tagline: "सामान्य जानकारी, उपयोगी पोस्ट और आपके विचार",
   logoUrl: "",
   headerColor1: "#1263c5",
   headerColor2: "#55a5f5",
-  contactLabel: "हमसे संपर्क करें",
+  buttonColor: "#1769d2",
+  contactLabel: "Contact Us",
   whatsappUrl: "",
-  telegramUrl: ""
+  telegramUrl: "",
+  instagramUrl: ""
 };
 
-const visitorId = (() => {
-  let id = localStorage.getItem("gg_visitor_id");
-  if (!id) {
-    id = "visitor_" + Math.random().toString(36).slice(2);
-    localStorage.setItem("gg_visitor_id", id);
-  }
-  return id;
-})();
+let allPosts = [];
+let selectedImages = [];
+let visitorId = localStorage.getItem("gg_visitor_id");
 
-document.getElementById("year").textContent = new Date().getFullYear();
-</script>
-<script>
-async function showLogin() {
-  document.getElementById("loginBox").classList.remove("hidden");
+if (!visitorId) {
+  visitorId = "visitor_" + Math.random().toString(36).slice(2) + Date.now();
+  localStorage.setItem("gg_visitor_id", visitorId);
+}
+
+// Basic Helpers
+function byId(id) {
+  return document.getElementById(id);
+}
+
+function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, function(ch) {
+    return {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    }[ch];
+  });
+}
+
+function safeUrl(value) {
+  try {
+    const url = new URL(String(value || ""));
+    if (url.protocol === "https:" || url.protocol === "http:") {
+      return url.href;
+    }
+  } catch (error) {}
+  return "";
+}
+
+function showMessage(id, message) {
+  const el = byId(id);
+  if (el) el.textContent = message;
+}
+
+// Login Box
+function showLogin() {
+  byId("loginBox").classList.remove("hidden");
+  byId("loginMessage").textContent = "";
 }
 
 function hideLogin() {
-  document.getElementById("loginBox").classList.add("hidden");
+  byId("loginBox").classList.add("hidden");
 }
 
-async function login() {
-  const email = document.getElementById("adminEmail").value.trim();
-  const password = document.getElementById("adminPassword").value;
-  const message = document.getElementById("loginMessage");
+async function adminLogin() {
+  const email = byId("loginEmail").value.trim();
+  const password = byId("loginPassword").value;
 
-  message.textContent = "Login हो रहा है...";
-
-  const { data, error } = await db.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if (error) {
-    message.textContent = error.message;
+  if (!email || !password) {
+    showMessage("loginMessage", "Email और password भरें।");
     return;
   }
 
-  if (data.user.id !== ADMIN_UID) {
+  showMessage("loginMessage", "Login हो रहा है...");
+
+  const { data, error } = await db.auth.signInWithPassword({
+    email: email,
+    password: password
+  });
+
+  if (error) {
+    showMessage("loginMessage", error.message);
+    return;
+  }
+
+  if (!data.user || data.user.id !== ADMIN_UID) {
     await db.auth.signOut();
-    message.textContent = "आपको Admin की अनुमति नहीं है।";
+    showMessage("loginMessage", "यह अकाउंट Admin नहीं है।");
     return;
   }
 
   currentUser = data.user;
   hideLogin();
-  document.getElementById("adminPanel").classList.remove("hidden");
+  byId("adminPanel").classList.remove("hidden");
   await loadAdminData();
+  showAdminTab("dashboard");
 }
 
-async function logout() {
+async function adminLogout() {
   await db.auth.signOut();
   currentUser = null;
-  document.getElementById("adminPanel").classList.add("hidden");
+  byId("adminPanel").classList.add("hidden");
+  alert("Logout हो गया।");
 }
 
+// Admin Tabs
 function showAdminTab(tab) {
-  document.querySelectorAll("#adminPanel .admin-section").forEach(section => {
-    section.classList.add("hidden");
+  const tabs = ["dashboard", "posts", "design", "social", "comments"];
+
+  tabs.forEach(function(name) {
+    const section = byId("tab-" + name);
+    if (section) {
+      section.classList.toggle("hidden", name !== tab);
+    }
   });
 
-  const selected = document.getElementById("tab-" + tab);
-  if (selected) selected.classList.remove("hidden");
+  if (tab === "posts") loadAdminPosts();
+  if (tab === "comments") loadPendingComments();
 }
 
-function esc(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[char]);
-}
-
-function validUrl(value) {
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:" || url.protocol === "http:";
-  } catch {
-    return false;
-  }
-}
-
+// Settings
 async function loadSettings() {
   const { data, error } = await db
     .from("site_settings")
@@ -306,278 +458,290 @@ async function loadSettings() {
     .eq("setting_key", "main")
     .maybeSingle();
 
-  currentSettings = {
-    ...DEFAULT_SETTINGS,
-    ...(data?.setting_value || {})
-  };
+  if (error) {
+    console.error("Settings error:", error);
+    return;
+  }
+
+  if (data && data.setting_value) {
+    currentSettings = {
+      ...currentSettings,
+      ...data.setting_value
+    };
+  }
 
   applySettings();
 }
 
 function applySettings() {
-  const s = currentSettings;
+  byId("siteTitle").textContent = currentSettings.title || "Guessing Guru 2.O";
+  byId("tagline").textContent = currentSettings.tagline || "";
 
-  document.getElementById("siteTitle").textContent = s.siteTitle;
-  document.getElementById("tagline").textContent = s.tagline;
+  document.documentElement.style.setProperty(
+    "--header1",
+    currentSettings.headerColor1 || "#1263c5"
+  );
 
-  document.documentElement.style.setProperty("--header1", s.headerColor1);
-  document.documentElement.style.setProperty("--header2", s.headerColor2);
+  document.documentElement.style.setProperty(
+    "--header2",
+    currentSettings.headerColor2 || "#55a5f5"
+  );
 
-  const logo = document.getElementById("logo");
+  document.documentElement.style.setProperty(
+    "--blue",
+    currentSettings.buttonColor || "#1769d2"
+  );
 
-  if (s.logoUrl && validUrl(s.logoUrl)) {
-    logo.src = s.logoUrl;
+  const logo = byId("logo");
+  if (currentSettings.logoUrl) {
+    logo.src = currentSettings.logoUrl;
     logo.classList.remove("hidden");
   } else {
     logo.classList.add("hidden");
   }
 
   renderSocialLinks();
-}
-
-function renderSocialLinks() {
-  const box = document.getElementById("socialLinks");
-  const s = currentSettings;
-
-  let html = "";
-
-  if (s.whatsappUrl && validUrl(s.whatsappUrl)) {
-    html += `<a class="social" href="${esc(s.whatsappUrl)}" target="_blank" rel="noopener">WhatsApp</a>`;
-  }
-
-  if (s.telegramUrl && validUrl(s.telegramUrl)) {
-    html += `<a class="social" href="${esc(s.telegramUrl)}" target="_blank" rel="noopener">Telegram</a>`;
-  }
-
-  box.innerHTML = html;
+  fillSettingsForm();
 }
 
 function fillSettingsForm() {
-  const s = currentSettings;
+  byId("settingTitle").value = currentSettings.title || "";
+  byId("settingTagline").value = currentSettings.tagline || "";
+  byId("headerColor1").value = currentSettings.headerColor1 || "#1263c5";
+  byId("headerColor2").value = currentSettings.headerColor2 || "#55a5f5";
+  byId("buttonColor").value = currentSettings.buttonColor || "#1769d2";
+  byId("contactLabel").value = currentSettings.contactLabel || "";
+  byId("whatsappUrl").value = currentSettings.whatsappUrl || "";
+  byId("telegramUrl").value = currentSettings.telegramUrl || "";
+  byId("instagramUrl").value = currentSettings.instagramUrl || "";
 
-  document.getElementById("siteTitleInput").value = s.siteTitle || "";
-  document.getElementById("taglineInput").value = s.tagline || "";
-  document.getElementById("logoUrl").value = s.logoUrl || "";
-  document.getElementById("headerColor1").value = s.headerColor1 || "#1263c5";
-  document.getElementById("headerColor2").value = s.headerColor2 || "#55a5f5";
-  document.getElementById("contactLabel").value = s.contactLabel || "";
-  document.getElementById("whatsappUrl").value = s.whatsappUrl || "";
-  document.getElementById("telegramUrl").value = s.telegramUrl || "";
+  byId("logoPreview").innerHTML = currentSettings.logoUrl
+    ? '<img src="' + esc(currentSettings.logoUrl) + '" style="max-width:120px;max-height:90px;object-fit:contain" alt="Logo preview">'
+    : "";
 }
 
+// Upload Logo
+async function uploadLogo() {
+  const file = byId("logoFile").files[0];
+  if (!file) return currentSettings.logoUrl;
+
+  if (!file.type.startsWith("image/")) {
+    throw new Error("Logo के लिए image file चुनें।");
+  }
+
+  const filename = "logo_" + Date.now() + "_" + file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+
+  const { error } = await db.storage
+    .from("post-photos")
+    .upload(filename, file, { upsert: true });
+
+  if (error) throw error;
+
+  const { data } = db.storage.from("post-photos").getPublicUrl(filename);
+  return data.publicUrl;
+}
+
+// Save Website Settings
 async function saveSettings() {
   if (!currentUser || currentUser.id !== ADMIN_UID) {
     alert("पहले Admin Login करें।");
     return;
   }
 
-  const s = {
-    siteTitle: document.getElementById("siteTitleInput").value.trim(),
-    tagline: document.getElementById("taglineInput").value.trim(),
-    logoUrl: document.getElementById("logoUrl").value.trim(),
-    headerColor1: document.getElementById("headerColor1").value,
-    headerColor2: document.getElementById("headerColor2").value,
-    contactLabel: document.getElementById("contactLabel").value.trim(),
-    whatsappUrl: document.getElementById("whatsappUrl").value.trim(),
-    telegramUrl: document.getElementById("telegramUrl").value.trim()
-  };
+  try {
+    const logoUrl = await uploadLogo();
 
-  if (s.logoUrl && !validUrl(s.logoUrl)) {
-    alert("Logo URL सही नहीं है।");
-    return;
+    currentSettings = {
+      ...currentSettings,
+      title: byId("settingTitle").value.trim() || "Guessing Guru 2.O",
+      tagline: byId("settingTagline").value.trim(),
+      logoUrl: logoUrl,
+      headerColor1: byId("headerColor1").value,
+      headerColor2: byId("headerColor2").value,
+      buttonColor: byId("buttonColor").value,
+      contactLabel: byId("contactLabel").value.trim() || "Contact Us",
+      whatsappUrl: byId("whatsappUrl").value.trim(),
+      telegramUrl: byId("telegramUrl").value.trim(),
+      instagramUrl: byId("instagramUrl").value.trim()
+    };
+
+    const { error } = await db.from("site_settings").upsert({
+      setting_key: "main",
+      setting_value: currentSettings,
+      updated_at: new Date().toISOString()
+    });
+
+    if (error) throw error;
+
+    applySettings();
+    byId("logoFile").value = "";
+    alert("Settings सफलतापूर्वक Save हो गईं।");
+  } catch (error) {
+    alert("Settings Save नहीं हुईं: " + error.message);
   }
+}// Social Links
+function renderSocialLinks() {
+  const box = byId("socialLinks");
+  const links = [
+    ["WhatsApp", currentSettings.whatsappUrl, "wa-link"],
+    ["Telegram", currentSettings.telegramUrl, "tg-link"],
+    ["Instagram", currentSettings.instagramUrl, "ig-link"]
+  ];
 
-  if (s.whatsappUrl && !validUrl(s.whatsappUrl)) {
-    alert("WhatsApp URL सही नहीं है।");
-    return;
-  }
+  const html = links.map(function(item) {
+    const url = safeUrl(item[1]);
+    if (!url) return "";
+    return '<a class="social ' + item[2] + '" href="' +
+      esc(url) + '" target="_blank" rel="noopener noreferrer">' +
+      esc(item[0]) + '</a>';
+  }).join("");
 
-  if (s.telegramUrl && !validUrl(s.telegramUrl)) {
-    alert("Telegram URL सही नहीं है।");
-    return;
-  }
-
-  const { error } = await db.from("site_settings").upsert({
-    setting_key: "main",
-    setting_value: s,
-    updated_at: new Date().toISOString()
-  });
-
-  if (error) {
-    alert("Settings सेव नहीं हुईं: " + error.message);
-    return;
-  }
-
-  currentSettings = s;
-  applySettings();
-  alert("Settings सेव हो गईं।");
+  box.innerHTML = html || '<p class="small">Social links जल्द उपलब्ध होंगे।</p>';
 }
 
-async function uploadImages(files) {
+// Upload Post Photos
+async function uploadPostPhotos(files) {
   const urls = [];
 
   for (const file of files) {
     if (!file.type.startsWith("image/")) continue;
 
-    const fileName = Date.now() + "_" +
+    const filename = "post_" + Date.now() + "_" +
       Math.random().toString(36).slice(2) + "_" +
       file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
 
     const { error } = await db.storage
       .from("post-photos")
-      .upload(fileName, file);
+      .upload(filename, file, { upsert: true });
 
     if (error) throw error;
 
-    const { data } = db.storage
-      .from("post-photos")
-      .getPublicUrl(fileName);
-
+    const { data } = db.storage.from("post-photos").getPublicUrl(filename);
     urls.push(data.publicUrl);
   }
 
   return urls;
 }
 
+// Save or Update Post
 async function savePost() {
   if (!currentUser || currentUser.id !== ADMIN_UID) {
     alert("पहले Admin Login करें।");
     return;
   }
 
-  const title = document.getElementById("postTitle").value.trim();
-  const description = document.getElementById("postDescription").value.trim();
-  const textColor = document.getElementById("postColor").value;
-  const editId = document.getElementById("editPostId").value;
-  const files = document.getElementById("postImages").files;
+  const title = byId("postTitle").value.trim();
+  const description = byId("postDescription").value.trim();
+  const textColor = byId("postTextColor").value;
+  const editId = byId("editPostId").value;
+  const files = Array.from(byId("postPhotos").files || []);
 
   if (!title || !description) {
-    alert("Title और Description भरें।");
+    alert("Post का Title और Description भरें।");
     return;
   }
 
   try {
-    const newImages = await uploadImages(files);
-    let imageUrls = [...selectedImages, ...newImages];
-
-    const postData = {
-      title,
-      description,
-      text_color: textColor,
-      image_urls: imageUrls
-    };
-
-    let result;
+    const newImages = await uploadPostPhotos(files);
+    let imageUrls = newImages;
 
     if (editId) {
-      result = await db.from("records")
-        .update(postData)
-        .eq("id", editId);
+      const oldPost = allPosts.find(p => String(p.id) === String(editId));
+      imageUrls = [...(oldPost?.image_urls || []), ...newImages];
+
+      const { error } = await db.from("records").update({
+        title,
+        description,
+        text_color: textColor,
+        image_urls: imageUrls
+      }).eq("id", editId);
+
+      if (error) throw error;
     } else {
-      result = await db.from("records")
-        .insert(postData);
+      const { error } = await db.from("records").insert({
+        title,
+        description,
+        text_color: textColor,
+        image_urls: imageUrls
+      });
+
+      if (error) throw error;
     }
 
-    if (result.error) throw result.error;
-
-    alert("Post सेव हो गई।");
+    alert("Post Save हो गई।");
     resetPostForm();
-    await loadAdminPosts();
     await loadPosts();
-    await refreshDashboard();
-
+    await loadAdminPosts();
+    await loadAdminData();
   } catch (error) {
-    alert("Post सेव नहीं हुई: " + error.message);
+    alert("Post Save नहीं हुई: " + error.message);
   }
 }
 
+// Clear Post Form
 function resetPostForm() {
-  document.getElementById("editPostId").value = "";
-  document.getElementById("postTitle").value = "";
-  document.getElementById("postDescription").value = "";
-  document.getElementById("postColor").value = "#ffffff";
-  document.getElementById("postImages").value = "";
-  document.getElementById("existingImages").innerHTML = "";
-  selectedImages = [];
-  removedImages = [];
+  byId("editPostId").value = "";
+  byId("postTitle").value = "";
+  byId("postDescription").value = "";
+  byId("postTextColor").value = "#24344d";
+  byId("postPhotos").value = "";
+  byId("selectedImages").innerHTML = "";
+  byId("postFormHeading").textContent = "Add New Post";
 }
 
-function editPost(post) {
-  document.getElementById("editPostId").value = post.id;
-  document.getElementById("postTitle").value = post.title || "";
-  document.getElementById("postDescription").value = post.description || "";
-  document.getElementById("postColor").value = post.text_color || "#ffffff";
-
-  selectedImages = [...(post.image_urls || [])];
-  removedImages = [];
-
-  renderExistingImages();
-  showAdminTab("posts");
-}
-
+// Edit Post
 function editPostById(id) {
-  const post = window.cachedPosts?.find(item => String(item.id) === String(id));
-  if (post) editPost(post);
-}
+  if (!currentUser || currentUser.id !== ADMIN_UID) return;
 
-function renderExistingImages() {
-  const box = document.getElementById("existingImages");
-
-  box.innerHTML = selectedImages.map((url, index) => `
-    <div class="image-row">
-      <img src="${esc(url)}" alt="Post photo">
-      <button class="danger" onclick="removeExistingImage(${index})">Remove</button>
-    </div>
-  `).join("");
-}
-
-function removeExistingImage(index) {
-  selectedImages.splice(index, 1);
-  renderExistingImages();
-}
-
-async function loadAdminPosts() {
-  const box = document.getElementById("adminPostsList");
-
-  const { data, error } = await db.from("records")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    box.textContent = error.message;
+  const post = allPosts.find(p => String(p.id) === String(id));
+  if (!post) {
+    alert("Post नहीं मिली।");
     return;
   }
 
-  box.innerHTML = (data || []).map(post => `
-    <div class="comment">
-      <strong>${esc(post.title)}</strong>
-      <p>${esc(post.description)}</p>
-      <button class="light" onclick='editPostById("${post.id}")'>Edit</button>
-      <button class="danger" onclick="deletePost(${post.id})">Delete</button>
-    </div>
-  `).join("");
+  byId("editPostId").value = post.id;
+  byId("postTitle").value = post.title || "";
+  byId("postDescription").value = post.description || "";
+  byId("postTextColor").value = post.text_color || "#24344d";
+  byId("postFormHeading").textContent = "Edit Post";
+  byId("postPhotos").value = "";
+
+  byId("selectedImages").innerHTML = (post.image_urls || []).map(function(url) {
+    return '<div class="image-row"><img src="' + esc(url) +
+      '" alt="Post photo"><span>पहले से लगी फोटो</span></div>';
+  }).join("");
+
+  showAdminTab("posts");
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+// Delete Post
 async function deletePost(id) {
-  if (!confirm("क्या आप यह पोस्ट हटाना चाहते हैं?")) return;
+  if (!currentUser || currentUser.id !== ADMIN_UID) return;
+  if (!confirm("क्या आप यह Post Delete करना चाहते हैं?")) return;
 
   const { error } = await db.from("records").delete().eq("id", id);
 
   if (error) {
-    alert(error.message);
+    alert("Delete नहीं हुई: " + error.message);
     return;
   }
 
-  await loadAdminPosts();
+  alert("Post Delete हो गई।");
   await loadPosts();
-  await refreshDashboard();
+  await loadAdminPosts();
+  await loadAdminData();
 }
 
-async function loadPosts() {
-  const box = document.getElementById("postsContainer");
-  box.innerHTML = "Posts लोड हो रही हैं...";
+// Admin Posts List
+async function loadAdminPosts() {
+  if (!currentUser || currentUser.id !== ADMIN_UID) return;
 
-  const { data, error } = await db.from("records")
+  const box = byId("adminPostsList");
+  box.textContent = "Posts लोड हो रही हैं...";
+
+  const { data, error } = await db
+    .from("records")
     .select("*")
     .order("created_at", { ascending: false });
 
@@ -586,109 +750,154 @@ async function loadPosts() {
     return;
   }
 
-  window.cachedPosts = data || [];
+  allPosts = data || [];
 
-  if (!data || data.length === 0) {
-    box.innerHTML = "<p>अभी कोई पोस्ट उपलब्ध नहीं है।</p>";
+  if (!allPosts.length) {
+    box.textContent = "अभी कोई Post नहीं है।";
     return;
   }
 
-  box.innerHTML = data.map(post => `
-    <article class="card post" style="--post-color:${esc(post.text_color || "#1769d2")}">
-      <h2>${esc(post.title)}</h2>
-      <p>${esc(post.description)}</p>
-
-      ${(post.image_urls || []).map(url => `
-        <img src="${esc(url)}" alt="Post Image" loading="lazy">
-      `).join("")}
-
-      <div class="author">Posted by Admin</div>
-
-      <div class="meta">
-        <span>Views: ${Number(post.view_count || 0)}</span>
-        <span>${new Date(post.created_at).toLocaleString("hi-IN")}</span>
-      </div>
-
-      <div class="contact-area">
-        <button class="contact-toggle" onclick="toggleContact('${post.id}')">
-          ${esc(currentSettings.contactLabel || "हमसे संपर्क करें")}
-        </button>
-        <div class="contact-links hidden" id="contact-${post.id}">
-          ${currentSettings.whatsappUrl && validUrl(currentSettings.whatsappUrl)
-            ? `<a class="wa-link" href="${esc(currentSettings.whatsappUrl)}" target="_blank" rel="noopener">WhatsApp</a>`
-            : ""}
-          ${currentSettings.telegramUrl && validUrl(currentSettings.telegramUrl)
-            ? `<a class="tg-link" href="${esc(currentSettings.telegramUrl)}" target="_blank" rel="noopener">Telegram</a>`
-            : ""}
-        </div>
-      </div>
-
-      <div id="comments-${post.id}">
-        <h3>Comments</h3>
-        <div id="comment-list-${post.id}"></div>
-        <label>आपका नाम</label>
-        <input id="name-${post.id}" placeholder="अपना नाम लिखें">
-        <label>Comment</label>
-        <textarea id="message-${post.id}" placeholder="अपनी राय लिखें"></textarea>
-        <button class="blue" onclick="sendComment(${post.id})">Comment भेजें</button>
-        <p class="small">आपका Comment Admin की मंजूरी के बाद दिखाई देगा।</p>
-      </div>
-    </article>
-  `).join("");
-
-  for (const post of data) {
-    countView(post.id);
-    loadComments(post.id);
-  }
-}
-
+  box.innerHTML = allPosts.map(function(post) {
+    return '<div class="comment">' +
+      '<strong>' + esc(post.title) + '</strong>' +
+      '<p class="small">Views: ' + Number(post.view_count || 0) + '</p>' +
+      '<button class="light" onclick="editPostById(' + Number(post.id) + ')">Edit</button> ' +
+      '<button class="danger" onclick="deletePost(' + Number(post.id) + ')">Delete</button>' +
+      '</div>';
+  }).join("");
+      }
+  // Contact Button
 function toggleContact(id) {
-  const box = document.getElementById("contact-" + id);
+  const box = byId("contact-" + id);
   if (box) box.classList.toggle("hidden");
 }
 
+// Increase Post Views
 async function countView(id) {
-  await db.rpc("increment_record_view", {
+  const { error } = await db.rpc("increment_record_view", {
     record_id: id
   });
+
+  if (error) console.error("View count error:", error);
 }
 
-async function loadComments(recordId) {
-  const box = document.getElementById("comment-list-" + recordId);
+// Load Public Posts
+async function loadPosts() {
+  const box = byId("postsContainer");
+  box.innerHTML = '<div class="card">Posts लोड हो रही हैं...</div>';
+
+  const { data, error } = await db
+    .from("records")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    box.innerHTML = '<div class="card">Posts लोड नहीं हुईं। कृपया बाद में कोशिश करें।</div>';
+    console.error(error);
+    return;
+  }
+
+  allPosts = data || [];
+
+  if (!allPosts.length) {
+    box.innerHTML = '<div class="card">अभी कोई Post उपलब्ध नहीं है।</div>';
+    return;
+  }
+
+  box.innerHTML = allPosts.map(function(post) {
+    const images = (post.image_urls || []).map(function(url) {
+      return '<img src="' + esc(url) + '" alt="Post photo" loading="lazy">';
+    }).join("");
+
+    const date = post.created_at
+      ? new Date(post.created_at).toLocaleString("hi-IN")
+      : "";
+
+    return `
+      <article class="card post" style="--post-color:${esc(post.text_color || "#1769d2")}">
+        <h2>${esc(post.title)}</h2>
+        <p>${esc(post.description)}</p>
+        ${images}
+        <div class="author">Posted by Admin</div>
+        <div class="meta">
+          <span>👁 Views: ${Number(post.view_count || 0)}</span>
+          <span>${esc(date)}</span>
+        </div>
+
+        <button class="contact-toggle" onclick="toggleContact(${Number(post.id)})">
+          ${esc(currentSettings.contactLabel || "Contact Us")}
+        </button>
+
+        <div id="contact-${Number(post.id)}" class="contact-links hidden">
+          ${currentSettings.whatsappUrl ? '<a class="wa-link" href="' + esc(safeUrl(currentSettings.whatsappUrl)) + '" target="_blank" rel="noopener">WhatsApp</a>' : ""}
+          ${currentSettings.telegramUrl ? '<a class="tg-link" href="' + esc(safeUrl(currentSettings.telegramUrl)) + '" target="_blank" rel="noopener">Telegram</a>' : ""}
+          ${currentSettings.instagramUrl ? '<a class="ig-link" href="' + esc(safeUrl(currentSettings.instagramUrl)) + '" target="_blank" rel="noopener">Instagram</a>' : ""}
+        </div>
+
+        <hr>
+        <h3>Comments</h3>
+        <div id="comments-${Number(post.id)}">Comments लोड हो रहे हैं...</div>
+
+        <label>आपका नाम</label>
+        <input id="commentName-${Number(post.id)}" type="text" maxlength="60" placeholder="अपना नाम लिखें">
+
+        <label>आपका Comment</label>
+        <textarea id="commentMessage-${Number(post.id)}" maxlength="1000" placeholder="अपना विचार लिखें..."></textarea>
+
+        <button class="blue" onclick="sendComment(${Number(post.id)})">Submit Comment</button>
+        <p class="small">आपका comment Admin की मंजूरी के बाद वेबसाइट पर दिखाई देगा।</p>
+      </article>
+    `;
+  }).join("");
+
+  for (const post of allPosts) {
+    countView(post.id);
+    loadPublicComments(post.id);
+  }
+}
+
+// Load Approved Public Comments
+async function loadPublicComments(postId) {
+  const box = byId("comments-" + postId);
   if (!box) return;
 
-  const { data, error } = await db.from("comments")
+  const { data, error } = await db
+    .from("comments")
     .select("*")
-    .eq("record_id", recordId)
+    .eq("record_id", postId)
     .eq("is_approved", true)
     .order("created_at", { ascending: true });
 
   if (error) {
-    box.textContent = "Comments लोड नहीं हुए।";
+    box.textContent = "Comments अभी लोड नहीं हो पाए।";
+    console.error(error);
     return;
   }
 
-  box.innerHTML = (data || []).map(comment => `
-    <div class="comment">
-      <strong>${esc(comment.name)}</strong>
-      <p>${esc(comment.message)}</p>
-      <span class="small">${new Date(comment.created_at).toLocaleString("hi-IN")}</span>
-      <div class="reactions" id="reactions-${comment.id}">
-        ${["👍","❤️","😂","😮","👎"].map(emoji => `
-          <button class="reaction" onclick="addReaction(${comment.id},'${emoji}')">${emoji}</button>
-        `).join("")}
-      </div>
-    </div>
-  `).join("") || "<p>अभी कोई Comment नहीं है।</p>";
+  if (!data || !data.length) {
+    box.textContent = "अभी कोई approved comment नहीं है।";
+    return;
+  }
 
-  for (const comment of data || []) {
+  box.innerHTML = data.map(function(comment) {
+    return `
+      <div class="comment">
+        <strong>${esc(comment.name)}</strong>
+        <p>${esc(comment.message)}</p>
+        <div class="reactions" id="reactions-${Number(comment.id)}">
+          <span class="small">Reactions लोड हो रहे हैं...</span>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  for (const comment of data) {
     loadReactions(comment.id);
   }
-}
-
-async function sendComment(recordId) {
-  const name = document.getElementById("name-" + recordId).value.trim();
-  const message = document.getElementById("message-" + recordId).value.trim();
+}// Submit Public Comment
+async function sendComment(postId) {
+  const name = byId("commentName-" + postId).value.trim();
+  const message = byId("commentMessage-" + postId).value.trim();
 
   if (!name || !message) {
     alert("नाम और Comment दोनों भरें।");
@@ -696,175 +905,213 @@ async function sendComment(recordId) {
   }
 
   const { error } = await db.from("comments").insert({
-    record_id: recordId,
-    name,
-    message,
+    record_id: postId,
+    name: name,
+    message: message,
     is_approved: false
   });
 
   if (error) {
-    alert("Comment नहीं भेजा गया: " + error.message);
+    alert("Comment Submit नहीं हुआ: " + error.message);
     return;
   }
 
-  document.getElementById("name-" + recordId).value = "";
-  document.getElementById("message-" + recordId).value = "";
+  byId("commentName-" + postId).value = "";
+  byId("commentMessage-" + postId).value = "";
 
-  alert("Comment भेज दिया गया है। Admin की मंजूरी के बाद दिखाई देगा।");
+  alert("आपका Comment भेज दिया गया है। Admin की मंजूरी के बाद दिखाई देगा।");
 }
-  
+
+// Load Reactions
 async function loadReactions(commentId) {
-  const { data, error } = await db.from("comment_reactions")
-    .select("emoji")
-    .eq("comment_id", commentId);
-
-  if (error) return;
-
-  const counts = {};
-  (data || []).forEach(item => {
-    counts[item.emoji] = (counts[item.emoji] || 0) + 1;
-  });
-
-  const box = document.getElementById("reactions-" + commentId);
+  const box = byId("reactions-" + commentId);
   if (!box) return;
 
-  box.querySelectorAll("button").forEach(button => {
-    const emoji = button.textContent.trim().split(" ")[0];
-    button.textContent = emoji + " " + (counts[emoji] || 0);
-  });
+  const { data, error } = await db
+    .from("comment_reactions")
+    .select("emoji,visitor_id")
+    .eq("comment_id", commentId);
+
+  if (error) {
+    box.textContent = "Reactions लोड नहीं हुए।";
+    console.error(error);
+    return;
+  }
+
+  const emojis = ["👍", "❤️", "😂", "😮", "👎"];
+
+  box.innerHTML = emojis.map(function(emoji) {
+    const count = (data || []).filter(r => r.emoji === emoji).length;
+    return '<button class="reaction" onclick="addReaction(' +
+      Number(commentId) + ', \'' + emoji + '\')">' +
+      emoji + ' ' + count + '</button>';
+  }).join("");
 }
 
+// Add Reaction
 async function addReaction(commentId, emoji) {
-  const { error } = await db.from("comment_reactions").insert({
+  const allowed = ["👍", "❤️", "😂", "😮", "👎"];
+  if (!allowed.includes(emoji)) return;
+
+  const { error } = await db.from("comment_reactions").upsert({
     comment_id: commentId,
     visitor_id: visitorId,
-    emoji
+    emoji: emoji
+  }, {
+    onConflict: "comment_id,visitor_id,emoji",
+    ignoreDuplicates: true
   });
 
   if (error) {
-    if (error.code === "23505") {
-      alert("आप यह Reaction पहले दे चुके हैं।");
-    } else {
-      alert("Reaction नहीं जुड़ा: " + error.message);
-    }
+    alert("Reaction नहीं जुड़ा: " + error.message);
     return;
   }
 
   await loadReactions(commentId);
 }
 
+// Admin: Load Pending Comments
 async function loadPendingComments() {
-  const box = document.getElementById("tab-comments");
-  if (!box) return;
+  if (!currentUser || currentUser.id !== ADMIN_UID) return;
 
-  const { data, error } = await db.from("comments")
-    .select("*")
+  const box = byId("pendingCommentsList");
+  box.textContent = "Pending comments लोड हो रहे हैं...";
+
+  const { data, error } = await db
+    .from("comments")
+    .select("id,record_id,name,message,created_at")
     .eq("is_approved", false)
     .order("created_at", { ascending: false });
 
   if (error) {
-    box.innerHTML = "Comments लोड नहीं हुए: " + esc(error.message);
+    box.textContent = "Comments लोड नहीं हुए: " + error.message;
     return;
   }
 
-  box.innerHTML = `
-    <h3>Pending Comments</h3>
-    ${(data || []).map(comment => `
+  if (!data || !data.length) {
+    box.textContent = "कोई Pending Comment नहीं है।";
+    return;
+  }
+
+  box.innerHTML = data.map(function(comment) {
+    return `
       <div class="comment">
         <strong>${esc(comment.name)}</strong>
         <p>${esc(comment.message)}</p>
-        <button class="blue" onclick="approveComment(${comment.id})">Approve</button>
-        <button class="danger" onclick="deleteComment(${comment.id})">Delete</button>
+        <p class="small">Post ID: ${Number(comment.record_id)}</p>
+        <button class="blue" onclick="approveComment(${Number(comment.id)})">Approve</button>
+        <button class="danger" onclick="deleteComment(${Number(comment.id)})">Delete</button>
       </div>
-    `).join("") || "<p>कोई Pending Comment नहीं है।</p>"}
-  `;
+    `;
+  }).join("");
 }
 
+// Admin: Approve Comment
 async function approveComment(id) {
-  const { error } = await db.from("comments")
+  if (!currentUser || currentUser.id !== ADMIN_UID) return;
+
+  const { error } = await db
+    .from("comments")
     .update({ is_approved: true })
     .eq("id", id);
 
   if (error) {
-    alert(error.message);
+    alert("Comment Approve नहीं हुआ: " + error.message);
     return;
   }
 
   await loadPendingComments();
   await loadPosts();
-  await refreshDashboard();
+  await loadAdminData();
 }
 
+// Admin: Delete Comment
 async function deleteComment(id) {
-  if (!confirm("क्या आप यह Comment हटाना चाहते हैं?")) return;
+  if (!currentUser || currentUser.id !== ADMIN_UID) return;
+  if (!confirm("क्या आप यह Comment Delete करना चाहते हैं?")) return;
 
-  const { error } = await db.from("comments")
-    .delete()
-    .eq("id", id);
+  const { error } = await db.from("comments").delete().eq("id", id);
 
   if (error) {
-    alert(error.message);
+    alert("Comment Delete नहीं हुआ: " + error.message);
     return;
   }
 
   await loadPendingComments();
   await loadPosts();
-  await refreshDashboard();
-}
+  await loadAdminData();
+      }
+  // Dashboard Data
+async function loadAdminData() {
+  if (!currentUser || currentUser.id !== ADMIN_UID) return;
 
-async function refreshDashboard() {
-  const { data: posts } = await db.from("records")
+  const { data: posts, error: postError } = await db
+    .from("records")
     .select("id,view_count");
 
-  const { data: comments } = await db.from("comments")
+  if (postError) {
+    console.error(postError);
+    return;
+  }
+
+  const { data: comments, error: commentError } = await db
+    .from("comments")
     .select("id,is_approved");
 
-  document.getElementById("totalPosts").textContent = posts?.length || 0;
+  if (commentError) {
+    console.error(commentError);
+    return;
+  }
 
-  document.getElementById("totalViews").textContent =
-    (posts || []).reduce((sum, post) => sum + Number(post.view_count || 0), 0);
+  const postList = posts || [];
+  const commentList = comments || [];
 
-  document.getElementById("totalComments").textContent = comments?.length || 0;
-
-  document.getElementById("pendingComments").textContent =
-    (comments || []).filter(comment => !comment.is_approved).length;
+  byId("totalPosts").textContent = postList.length;
+  byId("totalViews").textContent = postList.reduce(
+    (sum, post) => sum + Number(post.view_count || 0), 0
+  );
+  byId("totalComments").textContent = commentList.length;
+  byId("pendingCount").textContent = commentList.filter(
+    comment => !comment.is_approved
+  ).length;
 }
 
-async function loadAdminData() {
-  fillSettingsForm();
-  await loadAdminPosts();
-  await loadPendingComments();
-  await refreshDashboard();
-}
+// Language Switch
+let englishMode = false;
 
 function toggleLanguage() {
-  currentLanguage = currentLanguage === "hi" ? "en" : "hi";
+  englishMode = !englishMode;
 
-  document.getElementById("langBtn").textContent =
-    currentLanguage === "hi" ? "English" : "हिंदी";
+  byId("langBtn").textContent = englishMode ? "हिंदी" : "English";
 
-  document.getElementById("tagline").textContent =
-    currentLanguage === "hi"
-      ? currentSettings.tagline
-      : "General information, useful posts and your ideas";
+  byId("tagline").textContent = englishMode
+    ? "General information, useful posts and your thoughts"
+    : (currentSettings.tagline || "सामान्य जानकारी, उपयोगी पोस्ट और आपके विचार");
+
+  document.querySelectorAll(".post h2").forEach(function(el) {
+    // Post titles are kept as entered by Admin.
+  });
 }
 
-async function init() {
+// Start Website
+async function initWebsite() {
+  byId("currentYear").textContent = new Date().getFullYear();
+
   await loadSettings();
   await loadPosts();
 
   const { data } = await db.auth.getSession();
-  const user = data?.session?.user;
+  currentUser = data?.session?.user || null;
 
-  if (user && user.id === ADMIN_UID) {
-    currentUser = user;
-    document.getElementById("adminPanel").classList.remove("hidden");
+  if (currentUser && currentUser.id === ADMIN_UID) {
+    byId("adminPanel").classList.remove("hidden");
     await loadAdminData();
+  } else {
+    currentUser = null;
   }
 }
 
-init();
+initWebsite();
 </script>
 </body>
-    </html>
-      
+</html>
