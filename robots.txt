@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://amit0-50.github.io/sattamatka-prediction/sitemap.xml
